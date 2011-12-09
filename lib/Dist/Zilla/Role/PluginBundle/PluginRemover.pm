@@ -23,15 +23,25 @@ sub plugin_remover_attribute { '-remove' };
 
 sub mvp_multivalue_args { $_[0]->plugin_remover_attribute };
 
-around bundle_config => sub {
-  my ($orig, $class, $section) = @_;
+=method remove_plugins
 
-  # is it better to delete this or allow the bundle to see it?
-  my $remove = $section->{payload}->{ $class->plugin_remover_attribute };
+  $class->remove_plugins(\@to_remove, @plugins);
+  $class->remove_plugins(['Foo'], [Foo => 'DZP::Foo'], [Bar => 'DZP::Bar']);
 
-  my @plugins = $orig->($class, $section);
+Takes an arrayref of plugin names to remove
+(like what will be in the config payload for C<-remove>),
+removes them from the list of plugins passed,
+and returns the remaining plugins.
 
-  return @plugins unless $remove;
+This is used by the C<bundle_config> modifier
+but is defined separately in case you would like
+to use the functionality without the voodoo that occurs
+when consuming this role.
+
+=cut
+
+sub remove_plugins {
+  my ($self, $remove, @plugins) = @_;
 
   # stolen 100% from @Filter (thanks rjbs!)
   require List::MoreUtils;
@@ -42,6 +52,19 @@ around bundle_config => sub {
   }
 
   return @plugins;
+}
+
+around bundle_config => sub {
+  my ($orig, $class, $section) = @_;
+
+  # is it better to delete this or allow the bundle to see it?
+  my $remove = $section->{payload}->{ $class->plugin_remover_attribute };
+
+  my @plugins = $orig->($class, $section);
+
+  return @plugins unless $remove;
+
+  return $class->remove_plugins($remove, @plugins);
 };
 
 1;
