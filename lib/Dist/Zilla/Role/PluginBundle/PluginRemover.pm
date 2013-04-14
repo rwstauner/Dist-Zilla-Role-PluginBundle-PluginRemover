@@ -21,7 +21,12 @@ Defaults to C<-remove>.
 
 sub plugin_remover_attribute { '-remove' };
 
-sub mvp_multivalue_args { $_[0]->plugin_remover_attribute };
+sub mvp_multivalue_args { }
+around mvp_multivalue_args => sub {
+  my $orig = shift;
+  my $self = shift;
+  $self->plugin_remover_attribute, $self->$orig(@_)
+};
 
 =method remove_plugins
 
