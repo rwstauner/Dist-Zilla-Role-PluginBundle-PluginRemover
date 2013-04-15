@@ -9,8 +9,11 @@ with qw(
 use Dist::Zilla::Util;
 sub e { Dist::Zilla::Util->expand_config_package_name($_[0]); }
 
+sub mvp_multivalue_args { 'prefixes' }
+
 sub bundle_config {
-  my $name = $_[1]->{name};
+  my ($class, $arg) = @_;
+  my $name = join '/', $arg->{name}, @{ $arg->{payload}{prefixes} || [] };
   return (
     ["$name/Scan4Prereqs"   => e('AutoPrereqs')   => { }],
     ["$name/GoodbyeGarbage" => e('PruneCruft')    => { }],

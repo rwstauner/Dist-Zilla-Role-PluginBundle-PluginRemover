@@ -14,15 +14,24 @@ sub test_bundle {
   my $mod = "Dist::Zilla::PluginBundle::$name";
   eval "require $mod" or die $@;
 
+  my $prefix = "$BNAME/Thingy/Dooer";
   my @notprune = (
-    ["$BNAME/Scan4Prereqs"   => e('AutoPrereqs')   => { }],
+    ["$prefix/Scan4Prereqs"   => e('AutoPrereqs')   => { }],
   );
   my @expected = (
     @notprune,
-    ["$BNAME/GoodbyeGarbage" => e('PruneCruft')    => { }],
+    ["$prefix/GoodbyeGarbage" => e('PruneCruft')    => { }],
   );
 
-  my $bundled = sub { $mod->bundle_config({ name => $BNAME, payload => shift }) };
+  my $bundled = sub {
+    $mod->bundle_config({
+      name => $BNAME,
+      payload => {
+        prefixes => [qw(Thingy Dooer)],
+        %{ $_[0] },
+      },
+    })
+  };
 
   is_deeply
     [ $bundled->({}) ],
