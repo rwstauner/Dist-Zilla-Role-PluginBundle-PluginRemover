@@ -21,7 +21,11 @@ Defaults to C<-remove>.
 
 sub plugin_remover_attribute { '-remove' };
 
+# Stub an empty sub so we can use 'around'.
+# A consuming class can overwrite the empty sub
+# and the 'around' will modify that sub at composition time.
 sub mvp_multivalue_args { }
+
 around mvp_multivalue_args => sub {
   my $orig = shift;
   my $self = shift;
