@@ -44,11 +44,6 @@ to define a different attribute name:
   # in your bundle package
   sub plugin_remover_attribute { 'scurvy_cur' }
 
-B<NOTE>: If you overwrite C<mvp_multivalue_args>
-you'll need to include the value of C<plugin_remover_attribute>
-(C<-remove> by default) if you want to retain this functionality.
-As always, patches and suggestions are welcome.
-
 This role adds a method modifier to C<bundle_config>,
 which is the method that the root C<PluginBundle> role requires,
 and that C<PluginBundle::Easy> wraps.
