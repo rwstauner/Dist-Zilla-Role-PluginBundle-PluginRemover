@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Role-PluginBundle-PluginRemover
 
 {{$NEXT}}
 
+  - Use 'around' (and an empty sub) to add attribute name to
+    mvp_multivalue_args.  Thanks to Karen Etheridge for the patch!
+
 0.101     2011-12-09T23:47:09Z
 
   - Initial release
