@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Role-PluginBundle-PluginRemover
 
 {{$NEXT}}
 
+  - also allow removing individual plugins by unique name, where more than one
+    plugin of the same type is in use
+
 0.102     2013-04-15T05:08:23Z
 
   - Use 'around' (and an empty sub) to add attribute name to

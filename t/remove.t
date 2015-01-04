@@ -11,8 +11,10 @@ use Dist::Zilla::Util;
 sub e { Dist::Zilla::Util->expand_config_package_name($_[0]); }
 
 my @plugins = (
-  [Foo => e('Foo')],
-  [Bar => e('Bar')],
+  ['@Bundle/Foo' => e('Foo')],  # default name
+  ['second Foo' => e('Foo')],   # custom name
+  ['@Bundle/Bar' => e('Bar')],
+  ['second Bar' => e('Bar')],
 );
 
   is_deeply
@@ -22,17 +24,33 @@ my @plugins = (
 
   is_deeply
     [ $mod->remove_plugins([qw(Foo)], @plugins) ],
-    [ [Bar => e('Bar')] ],
-    'one removed';
+    [
+      ['@Bundle/Bar' => e('Bar')],
+      ['second Bar' => e('Bar')],
+    ],
+    'all Foo removed';
 
   is_deeply
     [ $mod->remove_plugins([qw(Bar)], @plugins) ],
-    [ [Foo => e('Foo')] ],
-    'other removed';
+    [
+      ['@Bundle/Foo' => e('Foo')],
+      ['second Foo' => e('Foo')],
+    ],
+    'all Bar removed';
 
   is_deeply
     [ $mod->remove_plugins([qw(Bar Foo)], @plugins) ],
     [ ],
     'nothing left';
+
+  is_deeply
+    [ $mod->remove_plugins(['second Foo'], @plugins) ],
+    [
+      ['@Bundle/Foo' => e('Foo')],
+      ['@Bundle/Bar' => e('Bar')],
+      ['second Bar' => e('Bar')],
+    ],
+    'one Foo removed';
+
 
 done_testing;

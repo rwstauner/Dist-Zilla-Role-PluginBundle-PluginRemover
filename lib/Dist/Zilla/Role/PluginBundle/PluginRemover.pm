@@ -47,15 +47,32 @@ but is defined separately in case you would like
 to use the functionality without the voodoo that occurs
 when consuming this role.
 
+The plugin name to match against all plugins can be given as either the plugin
+moniker (like you might provide in your config file, expanded via
+L<Dist::Zilla::Util/expand_config>), or the unique plugin name used to
+differentiate multiple plugins of the same type. For example, in this
+configuration:
+
+    [Foo::Bar / plugin 1]
+    [Foo::Bar / plugin 2]
+
+passing C<'Foo::Bar'> to C<remove_plugins> will remove both these plugins from
+the configuration, but only the first is removed when passing C<'plugin 1'>.
+
 =cut
 
 sub remove_plugins {
   my ($self, $remove, @plugins) = @_;
 
-  # stolen 100% from @Filter (thanks rjbs!)
+  # plugin specifications look like:
+  # [ plugin_name, plugin_class, arguments ]
+
+  # stolen 99% from @Filter (thanks rjbs!)
   require List::MoreUtils;
   for my $i (reverse 0 .. $#plugins) {
     splice @plugins, $i, 1 if List::MoreUtils::any(sub {
+      $plugins[$i][0] eq $_
+        or
       $plugins[$i][1] eq Dist::Zilla::Util->expand_config_package_name($_)
     }, @$remove);
   }
