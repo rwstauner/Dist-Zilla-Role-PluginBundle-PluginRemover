@@ -1,0 +1,123 @@
+# NAME
+
+Dist::Zilla::Role::PluginBundle::PluginRemover - Add '-remove' functionality to a bundle
+
+# VERSION
+
+version 0.103
+
+# SYNOPSIS
+
+    # in Dist::Zilla::PluginBundle::MyBundle
+
+    with (
+      'Dist::Zilla::Role::PluginBundle', # or PluginBundle::Easy
+      'Dist::Zilla::Role::PluginBundle::PluginRemover'
+    );
+
+    # PluginRemover should probably be last
+    # (unless you're doing something more complex)
+
+# DESCRIPTION
+
+This role enables your [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla) Plugin Bundle
+to automatically remove any plugins specified
+by the `-remove` attribute
+(like [@Filter](https://metacpan.org/pod/Dist::Zilla::PluginBundle::Filter) does):
+
+    [@MyBundle]
+    -remove = PluginIDontWant
+    -remove = OtherDumbPlugin
+
+If you want to use an attribute named `-remove` for your own bundle
+you can override the `plugin_remover_attribute` sub
+to define a different attribute name:
+
+    # in your bundle package
+    sub plugin_remover_attribute { 'scurvy_cur' }
+
+This role adds a method modifier to `bundle_config`,
+which is the method that the root `PluginBundle` role requires,
+and that `PluginBundle::Easy` wraps.
+
+# METHODS
+
+## plugin\_remover\_attribute
+
+Returns the name of the attribute
+containing the array ref of plugins to remove.
+
+Defaults to `-remove`.
+
+## remove\_plugins
+
+    $class->remove_plugins(\@to_remove, @plugins);
+    $class->remove_plugins(['Foo'], [Foo => 'DZP::Foo'], [Bar => 'DZP::Bar']);
+
+Takes an arrayref of plugin names to remove
+(like what will be in the config payload for `-remove`),
+removes them from the list of plugins passed,
+and returns the remaining plugins.
+
+This is used by the `bundle_config` modifier
+but is defined separately in case you would like
+to use the functionality without the voodoo that occurs
+when consuming this role.
+
+The plugin name to match against all plugins can be given as either the plugin
+moniker (like you might provide in your config file, expanded via
+["expand\_config" in Dist::Zilla::Util](https://metacpan.org/pod/Dist::Zilla::Util#expand_config)), or the unique plugin name used to
+differentiate multiple plugins of the same type. For example, in this
+configuration:
+
+    [Foo::Bar / plugin 1]
+    [Foo::Bar / plugin 2]
+
+passing `'Foo::Bar'` to `remove_plugins` will remove both these plugins from
+the configuration, but only the first is removed when passing `'plugin 1'`.
+
+# SUPPORT
+
+## Perldoc
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc Dist::Zilla::Role::PluginBundle::PluginRemover
+
+## Websites
+
+The following websites have more information about this module, and may be of help to you. As always,
+in addition to those websites please use your favorite search engine to discover more resources.
+
+- MetaCPAN
+
+    A modern, open-source CPAN search engine, useful to view POD in HTML format.
+
+    [http://metacpan.org/release/Dist-Zilla-Role-PluginBundle-PluginRemover](http://metacpan.org/release/Dist-Zilla-Role-PluginBundle-PluginRemover)
+
+## Bugs / Feature Requests
+
+Please report any bugs or feature requests by email to `bug-dist-zilla-role-pluginbundle-pluginremover at rt.cpan.org`, or through
+the web interface at [https://rt.cpan.org/Public/Bug/Report.html?Queue=Dist-Zilla-Role-PluginBundle-PluginRemover](https://rt.cpan.org/Public/Bug/Report.html?Queue=Dist-Zilla-Role-PluginBundle-PluginRemover). You will be automatically notified of any
+progress on the request by the system.
+
+## Source Code
+
+[https://github.com/rwstauner/Dist-Zilla-Role-PluginBundle-PluginRemover](https://github.com/rwstauner/Dist-Zilla-Role-PluginBundle-PluginRemover)
+
+    git clone https://github.com/rwstauner/Dist-Zilla-Role-PluginBundle-PluginRemover.git
+
+# AUTHOR
+
+Randy Stauner <rwstauner@cpan.org>
+
+# CONTRIBUTOR
+
+Karen Etheridge <ether@cpan.org>
+
+# COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by Randy Stauner.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
