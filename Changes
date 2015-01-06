@@ -2,8 +2,11 @@ Revision history for Dist-Zilla-Role-PluginBundle-PluginRemover
 
 {{$NEXT}}
 
+0.103     2015-01-06T13:41:13Z
+
   - also allow removing individual plugins by unique name, where more than one
     plugin of the same type is in use
+    Thanks to Karen Etheridge for the patch! (gh-2).
 
 0.102     2013-04-15T05:08:23Z
 
