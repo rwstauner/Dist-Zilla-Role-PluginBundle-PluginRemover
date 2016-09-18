@@ -68,9 +68,9 @@ sub remove_plugins {
   # [ plugin_name, plugin_class, arguments ]
 
   # stolen 99% from @Filter (thanks rjbs!)
-  require List::MoreUtils;
+  require List::Util;
   for my $i (reverse 0 .. $#plugins) {
-    splice @plugins, $i, 1 if List::MoreUtils::any(sub {
+    splice @plugins, $i, 1 if List::Util::any(sub {
       $plugins[$i][0] eq $_
         or
       $plugins[$i][1] eq Dist::Zilla::Util->expand_config_package_name($_)
