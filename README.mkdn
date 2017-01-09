@@ -1,10 +1,14 @@
+[![Build Status](https://travis-ci.org/rwstauner/Dist-Zilla-Role-PluginBundle-PluginRemover.svg?branch=master)](https://travis-ci.org/rwstauner/Dist-Zilla-Role-PluginBundle-PluginRemover)
+[![Coverage Status](https://coveralls.io/repos/rwstauner/Dist-Zilla-Role-PluginBundle-PluginRemover/badge.svg?branch=master)](https://coveralls.io/r/rwstauner/Dist-Zilla-Role-PluginBundle-PluginRemover?branch=master)
+[![Kwalitee status](http://cpants.cpanauthors.org/dist/Dist-Zilla-Role-PluginBundle-PluginRemover.png)](http://cpants.charsbar.org/dist/overview/Dist-Zilla-Role-PluginBundle-PluginRemover)
+
 # NAME
 
 Dist::Zilla::Role::PluginBundle::PluginRemover - Add '-remove' functionality to a bundle
 
 # VERSION
 
-version 0.103
+version 0.104
 
 # SYNOPSIS
 
